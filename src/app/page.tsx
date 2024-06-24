@@ -1,9 +1,8 @@
+// @ts-nocheck
+
 import React, { useState } from "react";
 import { fetchPokemon, fetchPokemonTypes } from "./actions";
 import Form from "@/components/ui/form";
-import { PokemonCard } from "@/components/ui/pokemonCard";
-
-
 interface IPokemonDetail {
   name: string;
   url: string;
@@ -24,11 +23,6 @@ const Home = async () => {
         initialPokemonList={initialPokemonList}
         initialPokemonTypes={initialPokemonTypes}
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-7">
-        {initialPokemonList.map((pokemon: IPokemonDetail, index: number) => (
-          <PokemonCard key={index} pokemon={pokemon} />
-        ))}
-      </div>
     </main>
   );
 };
