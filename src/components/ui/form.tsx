@@ -11,22 +11,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search } from "@/components/ui/searchInput";
-import { fetchPokemonByType } from "@/app/actions";
 import { PokemonCard } from "./pokemonCard";
-
-interface IPokemonType {
-  name: string;
-  url: string;
-}
-
-interface IPokemonDetail {
-  name: string;
-  url: string;
-}
+import {IpokemonInfo } from "@/types/common";
+import { capitalizeFirstLetter } from "@/lib/utils";
 
 interface FormProps {
-  initialPokemonList: IPokemonDetail[];
-  initialPokemonTypes: IPokemonType[];
+  initialPokemonList: IpokemonInfo[];
+  initialPokemonTypes: IpokemonInfo[];
 }
 
 const Form: React.FC<FormProps> = ({
@@ -37,7 +28,7 @@ const Form: React.FC<FormProps> = ({
     null
   );
   const [filteredPokemonList, setFilteredPokemonList] =
-    useState<IPokemonDetail[]>(initialPokemonList);
+    useState<IpokemonInfo[]>(initialPokemonList);
 
   const [query, setQuery] = useState("");
 
@@ -46,7 +37,6 @@ const Form: React.FC<FormProps> = ({
     if (!query) {
       setFilteredPokemonList(
         initialPokemonList.filter((pokemon) =>
-          // @ts-ignore
           pokemon.types.includes(selectedPokemonType)
         )
       );
@@ -60,10 +50,7 @@ const Form: React.FC<FormProps> = ({
       setFilteredPokemonList(initialPokemonList);
     } else {
       setFilteredPokemonList(
-        initialPokemonList.filter((pokemon) =>
-          // @ts-ignore
-          pokemon.types.includes(value)
-        )
+        initialPokemonList.filter((pokemon) => pokemon.types.includes(value))
       );
     }
   };
@@ -72,7 +59,7 @@ const Form: React.FC<FormProps> = ({
     const query = event.target.value.toLowerCase();
     setQuery(query);
     const filteredList = filteredPokemonList.filter(
-      (pokemon: IPokemonDetail) => {
+      (pokemon: IpokemonInfo) => {
         return pokemon.name.toLowerCase().includes(query);
       }
     );
@@ -88,8 +75,6 @@ const Form: React.FC<FormProps> = ({
     }
   };
 
-  console.log(filteredPokemonList, "filteredPokemonListfilteredPokemonList");
-
   return (
     <>
       <Select onValueChange={handleSelectChange}>
@@ -102,9 +87,9 @@ const Form: React.FC<FormProps> = ({
           <SelectGroup>
             <SelectLabel>Pokemon Types</SelectLabel>
             <SelectItem value="all">All Type Pokemon</SelectItem>
-            {initialPokemonTypes.map((type: IPokemonType, i: number) => (
+            {initialPokemonTypes.map((type: IpokemonInfo, i: number) => (
               <SelectItem value={type.name} key={i}>
-                {type.name}
+                {capitalizeFirstLetter(type.name)}
               </SelectItem>
             ))}
           </SelectGroup>
@@ -114,7 +99,7 @@ const Form: React.FC<FormProps> = ({
         <Search className="w-96" onChange={handleSearchChange} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-7">
-        {filteredPokemonList.map((pokemon: IPokemonDetail, index: number) => (
+        {filteredPokemonList.map((pokemon: IpokemonInfo, index: number) => (
           <PokemonCard key={index} pokemon={pokemon} />
         ))}
       </div>
