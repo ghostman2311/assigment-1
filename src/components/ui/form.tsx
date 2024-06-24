@@ -1,43 +1,91 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select";
-  import { Search } from "@/components/ui/searchInput";
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Search } from "@/components/ui/searchInput";
 
-  interface IPokemonType {
-    name: string;
-    url: string;
-  }
+import { PokemonCard } from "@/components/ui/pokemonCard";
 
-  
-const Form=()=> {
-    const [pokemonList, setPokemonList] = useState<IPokemonDetail[]>([]);
-    const [selectedPokemonType, setSelectedPokemonType] = useState<string | null>(
-        null
-      );
-    const [searchQuery, setSearchQuery] = useState("");
-    const [pokemonTypes, setPokemonTypes] = useState<IPokemonType[]>([]);
-    const [filteredPokemonList, setFilteredPokemonList] = useState<
-    IPokemonDetail[]
-  >([]);
-    const getSelectPlaceholder = () => {
-        if (selectedPokemonType) {
-          return selectedPokemonType;
-        } else {
-          return "All Type Pokemon";
-        }
-      };
+interface IPokemonType {
+  name: string;
+  url: string;
+}
+
+interface IPokemonDetail {
+  name: string;
+  url: string;
+}
+
+interface FormProps {
+  initialPokemonList: IPokemonDetail[];
+  initialPokemonTypes: IPokemonType[];
+}
+
+const Form: React.FC<FormProps> = ({
+  initialPokemonList,
+  initialPokemonTypes,
+}) => {
+  const [pokemonList, setPokemonList] =
+    useState<IPokemonDetail[]>(initialPokemonList);
+  const [pokemonTypes, setPokemonTypes] =
+    useState<IPokemonType[]>(initialPokemonTypes);
+  const [selectedPokemonType, setSelectedPokemonType] = useState<string | null>(
+    null
+  );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredPokemonList, setFilteredPokemonList] =
+    useState<IPokemonDetail[]>(initialPokemonList);
+
+  useEffect(() => {
+    if (!searchQuery) {
+      setFilteredPokemonList(pokemonList);
+    }
+  }, [pokemonList, searchQuery]);
+
+  const handleSelectChange = async (value: string) => {
+    setSelectedPokemonType(value === "all" ? null : value);
+
+    if (value === "all") {
+      setFilteredPokemonList(pokemonList);
+    } else {
+      const selectedType = pokemonTypes.find((type) => type.name === value);
+      if (selectedType) {
+        const data = await fetchPokemonByType(selectedType.url);
+        setFilteredPokemonList(data);
+      }
+    }
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    const filteredList = pokemonList.filter((pokemon: IPokemonDetail) => {
+      return pokemon.name.toLowerCase().includes(query);
+    });
+
+    setFilteredPokemonList(filteredList);
+  };
+
+  const getSelectPlaceholder = () => {
+    if (selectedPokemonType) {
+      return selectedPokemonType;
+    } else {
+      return "All Type Pokemon";
+    }
+  };
+
   return (
-   <div>
-    <Select onValueChange={handleSelectChange}>
+    <>
+      <Select onValueChange={handleSelectChange}>
         <SelectTrigger className="w-[280px]">
           <SelectValue placeholder={getSelectPlaceholder()}>
             {getSelectPlaceholder()}
@@ -58,8 +106,8 @@ const Form=()=> {
       <div className="flex">
         <Search className="w-96" onChange={handleSearchChange} />
       </div>
-   </div>
-  )
-}
+    </>
+  );
+};
 
 export default Form;
