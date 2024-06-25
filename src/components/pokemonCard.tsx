@@ -9,6 +9,7 @@ export function PokemonCard({ pokemon }: { pokemon: IpokemonInfo }) {
   return (
     <>
       <div className="rounded-lg max-w-full sm:max-w-sm min-h-24 bg-white flex flex-col items-center">
+      <div className="flex justify-center">
         <Image
           src={pokemon.imageUrl}
           alt={pokemon.name}
@@ -16,6 +17,7 @@ export function PokemonCard({ pokemon }: { pokemon: IpokemonInfo }) {
           width={320}
           className="rounded-t-lg"
         />
+        </div>
         <div className="bg-gray-200 rounded-b-lg w-full">
         <p className="text-base font-semibold sm:text-xl text-[#506b7c] mt-4 mb-2 p-4 ">
           {capitalizeFirstLetter(pokemon.name)}
