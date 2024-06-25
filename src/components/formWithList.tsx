@@ -55,19 +55,21 @@ const FormWithList: React.FC<FormProps> = ({ initialPokemonList, initialPokemonT
         <Search className="w-full pr-20" onChange={handleSearchChange} />
         <Button className="absolute right-0 rounded-l-none">Search</Button>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-7">
+     
         {filteredPokemonList.length > 0 ? (
-          filteredPokemonList.map((pokemon, index) => (
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-7">
+         { filteredPokemonList.map((pokemon, index) => (
             <PokemonCard key={index} pokemon={pokemon} />
-          ))
+          ))}
+          </div>
         ) : (
-          <div className="mt-8 w-screen flex justify-center items-center">
-            <p className="text-base font-semibold sm:text-xl text-[#506b7c] mt-4 mb-2 p-4 ">
+          <div className="mt-8 w-screen flex justify-center items-center pr-5">
+            <p className="text-base font-semibold sm:text-xl text-[#506b7c] ">
               No Pokemon found
             </p>
           </div>
         )}
-      </div>
+    
     </>
   );
 };
