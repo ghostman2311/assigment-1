@@ -9,10 +9,9 @@ export function PokemonCard({ pokemon }: { pokemon: IpokemonInfo }) {
   return (
     <>
       <div className="rounded-lg max-w-full sm:max-w-sm min-h-24 bg-white flex flex-col items-center">
-      
         <Image
           src={pokemon.imageUrl}
-          alt="jordans"
+          alt={pokemon.name}
           height={80}
           width={320}
           className="rounded-t-lg"
@@ -22,7 +21,7 @@ export function PokemonCard({ pokemon }: { pokemon: IpokemonInfo }) {
           {capitalizeFirstLetter(pokemon.name)}
         </p>
         <Link href={pokemon.name}>
-          <div className="flex gap-1 font-[#6ba3c5] p-4 items-center">
+          <div className="flex gap-1 font-[#6ba3c5] p-4 items-center cursor-pointer">
             <span className="text-sm  text-blue-500">Details</span>
             <ArrowRight width={16} height={16} className="text-blue-500" />
           </div>

@@ -36,10 +36,3 @@ export async function fetchPokemonTypes() {
   return data.results;
 }
 
-// Fetch Pokemon by type
-export async function fetchPokemonByType(typeUrl: string) {
-  const res = await fetch(typeUrl);
-  const data = await res.json();
-  const pokemon = data.pokemon.map((p: any) => p.pokemon);
-  return pokemon;
-}
