@@ -2,10 +2,9 @@ import * as React from "react"
 import { SearchIcon } from "lucide-react";
 import { cn } from "@/lib/utils"
 
-
 export type SearchProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-const Search = React.forwardRef<HTMLInputElement, InputProps>(
+const Search = React.forwardRef<HTMLInputElement, SearchProps>(
   ({ className, ...props }, ref) => {
     return (
       <div

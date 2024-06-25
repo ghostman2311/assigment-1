@@ -10,10 +10,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search } from "@/components/ui/searchInput";
 import { PokemonCard } from "./pokemonCard";
-import {IpokemonInfo } from "@/types/common";
+import { IpokemonInfo } from "@/types/common";
 import { capitalizeFirstLetter } from "@/lib/utils";
+import { Button } from "./ui/button";
+import { Search } from "./searchInput";
 
 interface FormProps {
   initialPokemonList: IpokemonInfo[];
@@ -58,11 +59,9 @@ const Form: React.FC<FormProps> = ({
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value.toLowerCase();
     setQuery(query);
-    const filteredList = filteredPokemonList.filter(
-      (pokemon: IpokemonInfo) => {
-        return pokemon.name.toLowerCase().includes(query);
-      }
-    );
+    const filteredList = filteredPokemonList.filter((pokemon: IpokemonInfo) => {
+      return pokemon.name.toLowerCase().includes(query);
+    });
 
     setFilteredPokemonList(filteredList);
   };
@@ -78,7 +77,7 @@ const Form: React.FC<FormProps> = ({
   return (
     <>
       <Select onValueChange={handleSelectChange}>
-        <SelectTrigger className="w-[280px]">
+        <SelectTrigger className="w-full sm:w-4/12">
           <SelectValue placeholder={getSelectPlaceholder()}>
             {getSelectPlaceholder()}
           </SelectValue>
@@ -95,13 +94,22 @@ const Form: React.FC<FormProps> = ({
           </SelectGroup>
         </SelectContent>
       </Select>
-      <div className="flex">
-        <Search className="w-96" onChange={handleSearchChange} />
+      <div className="flex relative items-center w-full sm:w-6/12">
+        <Search className="w-full pr-20" onChange={handleSearchChange} />
+        <Button className="absolute right-0 rounded-l-none ">Search</Button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-7">
-        {filteredPokemonList.map((pokemon: IpokemonInfo, index: number) => (
-          <PokemonCard key={index} pokemon={pokemon} />
-        ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-7">
+        {filteredPokemonList.length > 0 ? (
+          filteredPokemonList?.map((pokemon: IpokemonInfo, index: number) => (
+            <PokemonCard key={index} pokemon={pokemon} />
+          ))
+        ) : (
+          <div className="mt-8 w-screen flex justify-center items-center">
+            <p className="text-base font-semibold sm:text-xl text-[#506b7c] mt-4 mb-2 p-4 ">
+              No Pokemon found
+            </p>
+          </div>
+        )}
       </div>
     </>
   );

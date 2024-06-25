@@ -5,10 +5,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const capitalizeFirstLetter = (str:string) => {
-  if (typeof str !== 'string' || str.length === 0) {
+export const capitalizeFirstLetter = (word:string) => {
+  if (typeof word !== 'string' || word.length === 0) {
       return '';
   }
-
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  return word.charAt(0).toUpperCase() + word.slice(1);
 };
